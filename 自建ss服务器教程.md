@@ -160,12 +160,12 @@ xshell5:
 
 **支持 Debian 9-13、Ubuntu 18.04-25.04 等高版本 Linux 系统，推荐 Debian/Ubuntu 系统。**
 
-**SSR 脚本（新），支持 Debian 9-13、Ubuntu 18.04-25.04 等高版本 Linux 系统，安装完成后，快捷管理命令：bash ssr-plus.sh  脚本地址：[Alvin9999-newpac-newpac/SSR-Plus](https://github.com/Alvin9999-newpac-newpac/SSR-Plus) 如果使用新脚本，请先把旧脚本卸载了。**
+**SSR 脚本（新），支持 Debian 9-13、Ubuntu 18.04-25.04 等高版本 Linux 系统，安装完成后，快捷管理命令：bash ssr-plus.sh  脚本地址：[Alvin9999-newpac/SSR-Plus](https://github.com/Alvin9999-newpac/SSR-Plus) 如果使用新脚本，请先把旧脚本卸载了。**
 
 ***
 
 ```bash
-wget -O ssr-plus.sh https://raw.githubusercontent.com/Alvin9999-newpac-newpac/SSR-Plus/main/ssr-plus.sh && chmod +x ssr-plus.sh && bash ssr-plus.sh
+wget -O ssr-plus.sh https://raw.githubusercontent.com/Alvin9999-newpac/SSR-Plus/main/ssr-plus.sh && chmod +x ssr-plus.sh && bash ssr-plus.sh
 ```
 ***
 

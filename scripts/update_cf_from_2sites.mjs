@@ -7,7 +7,7 @@ const WETEST_URL = "https://www.wetest.vip/page/cloudflare/address_v4.html";
 const HOSTMONIT_URL = "https://stock.hostmonit.com/CloudFlareYes";
 
 // ✅ 你要更新的目标文件
-const TARGET_FILE = "cloudflare_ipv4.txt";
+const TARGET_FILE = "cloudflare优选ip";
 
 // ✅ 输出顺序（按你想要的）
 const CARRIERS_ORDER = ["移动", "联通", "电信"];

@@ -35,7 +35,7 @@ async function fetchTable(url) {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
 
-  await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
+await page.goto(url, { waitUntil: "domcontentloaded", timeout: 120000 });
   await page.waitForSelector("table", { timeout: 60000 });
 
   const rows = await page.$$eval("table tbody tr", trs =>

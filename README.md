@@ -10,7 +10,7 @@ https://github.com/Alvin9999-newpac/fanqiang/wiki
 [![Star History Chart](https://api.star-history.com/svg?repos=Alvin9999-newpac/fanqiang&type=Date)](https://star-history.com/#Alvin9999-newpac/fanqiang&Date)
 
 
-## Trademark Notice
+## License
 
 The project name **fanqiang** and any related names, logos, or identifiers
 are trademarks of the original author.

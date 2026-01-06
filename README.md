@@ -5,6 +5,8 @@
 https://github.com/Alvin9999-newpac/fanqiang/wiki
 
 
+如果你觉得 Hysteria 有用，请考虑给它一个 ⭐️！
+
 [![Star History Chart](https://api.star-history.com/svg?repos=Alvin9999-newpac/fanqiang&type=Date)](https://star-history.com/#Alvin9999-newpac/fanqiang&Date)
 
 

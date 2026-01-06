@@ -4,19 +4,4 @@
 
 https://github.com/Alvin9999-newpac/fanqiang/wiki
 
-
-如果你觉得 fanqiang 项目有用，请考虑页面右上角给它一个 ⭐️！
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Alvin9999-newpac/fanqiang&type=Date)](https://star-history.com/#Alvin9999-newpac/fanqiang&Date)
-
-
-## License
-
-The project name **fanqiang** and any related names, logos, or identifiers
-are trademarks of the original author.
-
-You may fork, modify, and redistribute the code according to the GPL v3 license,
-but you may NOT use the project name, claim official status,
-or imply endorsement by the original author
-without prior written permission.
-
+如果你觉得 fanqiang 项目有用，请点个赞⭐️，帮助项目更快成长！

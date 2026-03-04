@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 #  Sing-Box-Plus 管理脚本（18 节点：直连 9 + WARP 9）
-#  Version: v3.2.0
+#  Version: v3.5.1
 #  author：Alvin9999
 #  Repo: https://github.com/Alvin9999-newpac/Sing-Box-Plus
 # ============================================================
@@ -182,7 +182,7 @@ install_singbox_binary() {
 
   ensure_jq_static || { echo "[ERROR] 无法获取 jq，二进制模式失败"; rm -rf "$tmp"; return 1; }
 
-  json="$(with_retry 3 curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/latest)" || { rm -rf "$tmp"; return 1; }
+json="$(with_retry 3 curl -fsSL https://api.github.com/repos/SagerNet/sing-box/releases/tags/v1.12.22)" || { rm -rf "$tmp"; return 1; }
   url="$(printf '%s' "$json" | jq -r --arg a "$goarch" '
     .assets[] | select(.name|test("linux-" + $a + "\\.(tar\\.(xz|gz)|zip)$")) | .browser_download_url
   ' | head -n1)"
@@ -286,7 +286,7 @@ ENABLE_TUIC=${ENABLE_TUIC:-true}
 
 # 常量
 SCRIPT_NAME="Sing-Box-Plus 管理脚本"
-SCRIPT_VERSION="v3.2.0"
+SCRIPT_VERSION="v3.5.1"
 REALITY_SERVER=${REALITY_SERVER:-www.microsoft.com}
 REALITY_SERVER_PORT=${REALITY_SERVER_PORT:-443}
 GRPC_SERVICE=${GRPC_SERVICE:-grpc}
@@ -742,7 +742,7 @@ install_singbox() {
   command -v unzip >/dev/null 2>&1 || ensure_deps unzip   >/dev/null 2>&1 || true
 
   local repo="SagerNet/sing-box"
-  local tag="${SINGBOX_TAG:-latest}"   # 允许用环境变量固定版本，如 v1.12.7
+  local tag="${SINGBOX_TAG:-v1.12.22}"   # 允许用环境变量固定版本，如 v1.12.7
   local arch; arch="$(arch_map)"
   local api url tmp pkg re rel_url
 

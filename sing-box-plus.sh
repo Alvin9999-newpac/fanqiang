@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ============================================================
 #  Sing-Box-Plus 管理脚本（20 节点：直连 10 + WARP 10）
-#  Version: v4.7.0
+#  Version: v4.8.0
 #  author：Alvin9999
 #  Repo: https://github.com/Alvin9999-newpac/Sing-Box-Plus
 # ============================================================
@@ -286,7 +286,7 @@ ENABLE_ANYTLS=${ENABLE_ANYTLS:-true}
 
 # 常量
 SCRIPT_NAME="Sing-Box-Plus 管理脚本"
-SCRIPT_VERSION="v4.7.0"
+SCRIPT_VERSION="v4.8.0"
 REALITY_SERVER=${REALITY_SERVER:-www.microsoft.com}
 REALITY_SERVER_PORT=${REALITY_SERVER_PORT:-443}
 # REALITY 偷域名池：每个 reality inbound 安装时各自随机抽一个，抽中后写入 creds.env 持久化，
@@ -562,8 +562,8 @@ mk_cert(){
       -keyout "$key" -out "$crt" -subj "/CN=$REALITY_SERVER" \
       -addext "subjectAltName=DNS:$REALITY_SERVER" >/dev/null 2>&1
   fi
-    CRT_SHA256=$(openssl x509 -in "$crt" -fingerprint -sha256 -noout \
-    | sed 's/SHA256 Fingerprint=//;s/://g' | tr 'A-F' 'a-f')
+CRT_SHA256=$(openssl x509 -in "$crt" -fingerprint -sha256 -noout \
+  | sed 's/.*Fingerprint=//;s/://g' | tr 'A-F' 'a-f')
 }
 
 ensure_creds(){

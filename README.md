@@ -9,3 +9,5 @@
 项目：https://github.com/Alvin9999-newpac/fanqiang/wiki
 
 如果你觉得 fanqiang 项目有用，请点个赞⭐️，帮助项目更快成长～
+
+[![Star History Chart](https://star-history.dera.page/svg?repos=Alvin9999-newpac/fanqiang&type=Date)](https://star-history.dera.page/#Alvin9999-newpac/fanqiang&Date)

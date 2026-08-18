@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import path from "node:path";
 import { chromium } from "playwright";
 
 /* ================= 基本配置 ================= */
@@ -13,41 +12,97 @@ const MIN_TOTAL_IPS = 10;
 
 /* ================= 工具函数 ================= */
 
-function isIPv4(ip) {
-  return /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) &&
-    ip.split(".").every(n => Number(n) >= 0 && Number(n) <= 255);
+export function isIPv4(ip = "") {
+  if (typeof ip !== "string") return false;
+  const value = ip.trim();
+  return /^((\d{1,3}\.){3}\d{1,3})$/.test(value) &&
+    value.split(".").every(n => Number(n) >= 0 && Number(n) <= 255);
 }
 
-function normalizeCarrier(s = "") {
-  if (/移动|CMCC/i.test(s)) return "移动";
-  if (/联通|UNICOM|CUCC/i.test(s)) return "联通";
-  if (/电信|TELECOM|CTCC/i.test(s)) return "电信";
+export function normalizeCarrier(s = "") {
+  const text = String(s || "");
+  if (/移动|CMCC|China Mobile/i.test(text)) return "移动";
+  if (/联通|UNICOM|CUCC|China Unicom/i.test(text)) return "联通";
+  if (/电信|TELECOM|CTCC|China Telecom/i.test(text)) return "电信";
   return "";
 }
 
-function uniq(arr) {
+export function uniq(arr) {
   return [...new Set(arr)];
 }
 
-/* ================= 抓取函数 ================= */
+export function extractTableRowsFromHtml(html = "") {
+  const rows = [];
+  const rowPattern = /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
+  const cellPattern = /<(?:td|th)\b[^>]*>([\s\S]*?)<\/(?:td|th)>/gi;
+
+  for (const rowMatch of html.matchAll(rowPattern)) {
+    const cells = [];
+    for (const cellMatch of rowMatch[1].matchAll(cellPattern)) {
+      const text = cellMatch[1]
+        .replace(/<br\s*\/?>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (text) cells.push(text);
+    }
+    if (cells.length) rows.push(cells);
+  }
+
+  return rows;
+}
+
+async function fetchHtml(url) {
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+      "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8"
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} for ${url}`);
+  }
+
+  return response.text();
+}
+
+async function fetchTableFromHtml(url) {
+  const html = await fetchHtml(url);
+  return extractTableRowsFromHtml(html);
+}
+
+async function fetchTableWithBrowser(url) {
+  const browser = await chromium.launch({ headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 120000 });
+    await page.waitForSelector("table", { timeout: 60000 });
+
+    return await page.$$eval("table tbody tr", trs =>
+      trs.map(tr =>
+        Array.from(tr.querySelectorAll("td,th")).map(td =>
+          td.textContent?.trim() || ""
+        )
+      )
+    );
+  } finally {
+    await browser.close();
+  }
+}
 
 async function fetchTable(url) {
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
-
-await page.goto(url, { waitUntil: "domcontentloaded", timeout: 120000 });
-  await page.waitForSelector("table", { timeout: 60000 });
-
-  const rows = await page.$$eval("table tbody tr", trs =>
-    trs.map(tr =>
-      Array.from(tr.querySelectorAll("td")).map(td =>
-        td.textContent?.trim() || ""
-      )
-    )
-  );
-
-  await browser.close();
-  return rows;
+  try {
+    return await fetchTableWithBrowser(url);
+  } catch (error) {
+    const message = String(error?.message || error);
+    if (!/Executable doesn't exist|browserType\.launch|failed to launch|Cannot find/i.test(message)) {
+      throw error;
+    }
+    return fetchTableFromHtml(url);
+  }
 }
 
 async function fetchWetest() {
@@ -125,7 +180,9 @@ async function main() {
   console.log(`Wrote ${total} IPs -> ${OUTPUT_FILE}`);
 }
 
-main().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
